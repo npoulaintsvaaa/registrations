@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register · Transvalor Americas Tech Day 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy-900:#07101F;
+    --navy-850:#091627;
+    --navy-800:#0C1D34;
+    --navy-700:#112944;
+    --navy-600:#163553;
+    --banner-a:#1E4C8C;
+    --banner-b:#0E2748;
+    --steel:#9FB6D4;
+    --steel-dim:#6F88A8;
+    --ice:#EAF2FC;
+    --teal:#23A9A0;
+    --amber:#E8901E;
+    --amber-bright:#F4A638;
+    --amber-soft:rgba(232,144,30,.12);
+    --amber-line:rgba(232,144,30,.55);
+    --line:rgba(159,182,212,.16);
+    --line-strong:rgba(159,182,212,.30);
+    --danger:#E8901E;
+    --ok:#23A9A0;
+    --display:"Archivo", system-ui, sans-serif;
+    --body:"Barlow", system-ui, -apple-system, sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;}
+  body{
+    background:var(--navy-900);
+    color:var(--steel);
+    font-family:var(--body);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .page{max-width:760px;margin:0 auto;background:var(--navy-900);box-shadow:0 0 80px rgba(0,0,0,.6);}
+
+  /* ---------- BANNER ---------- */
+  .banner{
+    position:relative;overflow:hidden;
+    background:radial-gradient(120% 140% at 50% -20%, var(--banner-a) 0%, var(--banner-b) 55%, var(--navy-900) 100%);
+    padding:46px 34px 30px;text-align:center;
+  }
+  .banner svg.mesh{position:absolute;inset:0;width:100%;height:100%;opacity:.5;pointer-events:none;}
+  .glow{position:absolute;border-radius:50%;filter:blur(48px);opacity:.5;pointer-events:none;}
+  .glow.a{width:220px;height:160px;left:8%;top:30%;background:#C0521E;}
+  .glow.b{width:180px;height:150px;right:10%;top:18%;background:#1C6FB0;}
+  .glow.c{width:150px;height:120px;left:46%;top:48%;background:#1F7E78;}
+  .wordmark{
+    position:relative;font-family:var(--display);font-weight:800;color:#fff;
+    font-size:clamp(30px,8vw,52px);letter-spacing:.16em;margin:0;line-height:1;
+    text-shadow:0 2px 24px rgba(0,0,0,.35);
+  }
+  .wordmark-sub{
+    position:relative;font-family:var(--display);font-weight:700;color:var(--steel);
+    font-size:clamp(8px,2vw,11px);letter-spacing:.34em;margin:10px 0 0;text-transform:uppercase;
+  }
+  .rule{height:3px;background:var(--amber);border:0;margin:0;}
+
+  /* ---------- HERO ---------- */
+  .hero{padding:34px 34px 6px;}
+  .eyebrow{
+    font-family:var(--display);font-weight:700;color:var(--amber);
+    font-size:12px;letter-spacing:.28em;text-transform:uppercase;margin:0 0 12px;
+  }
+  .title{
+    font-family:var(--display);font-weight:900;line-height:.92;margin:0;
+    font-size:clamp(44px,12vw,82px);letter-spacing:-.01em;color:#fff;
+  }
+  .title .yr{color:var(--steel);}
+  .lede{font-size:16px;color:var(--steel);margin:16px 0 0;max-width:54ch;}
+  .lede b{color:var(--ice);font-weight:600;}
+
+  /* ---------- META ---------- */
+  .meta{
+    display:grid;grid-template-columns:1fr 1fr 1fr;gap:22px;
+    padding:28px 34px;margin-top:10px;
+  }
+  @media(max-width:600px){.meta{grid-template-columns:1fr;gap:18px;}}
+  .meta .col{border-left:2px solid var(--amber);padding-left:14px;}
+  .meta .k{font-family:var(--display);font-weight:700;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--teal);margin:0 0 6px;}
+  .meta .v{font-family:var(--display);font-weight:700;color:#fff;font-size:19px;line-height:1.15;}
+  .meta .sub{font-size:13px;color:var(--steel-dim);margin-top:4px;line-height:1.4;}
+  .host-mark{font-family:var(--display);font-weight:800;color:#fff;font-size:19px;letter-spacing:.02em;}
+  .host-mark small{display:block;font-weight:600;font-size:9px;letter-spacing:.26em;color:var(--amber);text-transform:uppercase;margin-top:3px;}
+
+  /* ---------- PROGRAM STRIP ---------- */
+  .program{padding:6px 34px 30px;}
+  .program h2{font-family:var(--display);font-weight:700;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--teal);margin:0 0 14px;}
+  .prog-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 22px;}
+  @media(max-width:600px){.prog-grid{grid-template-columns:1fr;}}
+  .prog-item{display:flex;gap:9px;font-size:13.5px;}
+  .prog-item .car{color:var(--amber);font-weight:700;}
+  .prog-item b{color:var(--ice);font-weight:600;}
+
+  /* ---------- FORM ---------- */
+  .form-wrap{background:var(--navy-850);border-top:1px solid var(--line-strong);padding:34px;}
+  .form-head{font-family:var(--display);font-weight:800;color:#fff;font-size:26px;margin:0 0 4px;}
+  .form-head .reserve{color:var(--amber);}
+  .form-intro{font-size:14px;color:var(--steel-dim);margin:0 0 26px;}
+
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  @media(max-width:520px){.grid2{grid-template-columns:1fr;}}
+  .fld{margin-bottom:16px;}
+  .fld label{display:block;font-family:var(--display);font-weight:600;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--steel);margin-bottom:7px;}
+  .fld label .req{color:var(--amber);margin-left:3px;}
+  .fld input[type=text],.fld input[type=email],.fld input[type=tel]{
+    width:100%;padding:12px 13px;border:1.5px solid var(--line-strong);border-radius:8px;
+    background:var(--navy-700);color:var(--ice);font-family:var(--body);font-size:15px;transition:border-color .15s,box-shadow .15s;
+  }
+  .fld input::placeholder{color:var(--steel-dim);}
+  .fld input:focus{outline:none;border-color:var(--amber);box-shadow:0 0 0 3px var(--amber-soft);}
+  .fld input.invalid{border-color:#E0533A;box-shadow:0 0 0 3px rgba(224,83,58,.14);}
+  .err{display:none;color:#F0876E;font-size:12px;margin-top:5px;}
+  .err.show{display:block;}
+
+  /* segmented toggle */
+  .seg{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  .seg button{
+    font-family:var(--display);font-weight:600;font-size:14px;padding:13px 0;border-radius:8px;cursor:pointer;
+    border:1.5px solid var(--line-strong);background:var(--navy-700);color:var(--steel);transition:all .15s;
+  }
+  .seg button:hover{border-color:var(--teal);color:var(--ice);}
+  .seg button[aria-pressed=true]{background:var(--teal);border-color:var(--teal);color:#06201E;}
+  .seg button:focus-visible{outline:2px solid var(--amber);outline-offset:2px;}
+
+  /* notices */
+  .notice{border-left:3px solid var(--amber-line);background:var(--amber-soft);padding:12px 14px;border-radius:6px;font-size:13px;color:var(--steel);margin-bottom:18px;}
+  .notice b{color:var(--amber-bright);font-weight:600;}
+  .notice .ico{color:var(--amber-bright);margin-right:6px;font-weight:700;}
+
+  .reveal{overflow:hidden;max-height:0;opacity:0;transition:max-height .35s ease,opacity .25s ease;}
+  .reveal.open{max-height:600px;opacity:1;}
+
+  .tour-note{display:none;border-left:3px solid var(--teal);background:rgba(35,169,160,.10);padding:13px 15px;border-radius:6px;font-size:13.5px;color:var(--ice);margin:4px 0 18px;}
+  .tour-note.show{display:block;}
+  .tour-note b{color:var(--teal);font-weight:700;}
+
+  .submit{
+    width:100%;font-family:var(--display);font-weight:800;font-size:16px;letter-spacing:.02em;
+    padding:16px 0;border:0;border-radius:9px;cursor:pointer;color:#1A0E02;margin-top:8px;
+    background:linear-gradient(180deg,var(--amber-bright),var(--amber));transition:transform .12s,filter .15s;
+  }
+  .submit:hover{filter:brightness(1.06);}
+  .submit:active{transform:translateY(1px);}
+  .submit:focus-visible{outline:2px solid var(--teal);outline-offset:3px;}
+  .submit:disabled{opacity:.55;cursor:wait;}
+
+  .demo-flag{display:none;margin-top:14px;font-size:12px;color:var(--steel-dim);text-align:center;font-family:var(--body);}
+  .demo-flag.show{display:block;}
+
+  .privacy{font-size:12px;color:var(--steel-dim);margin-top:16px;text-align:center;line-height:1.5;}
+
+  /* success */
+  .success{display:none;padding:54px 34px 60px;text-align:center;}
+  .success.show{display:block;}
+  .success .check{width:64px;height:64px;border-radius:50%;background:rgba(35,169,160,.15);border:2px solid var(--teal);display:flex;align-items:center;justify-content:center;margin:0 auto 22px;color:var(--teal);font-size:30px;}
+  .success h2{font-family:var(--display);font-weight:900;color:#fff;font-size:30px;margin:0 0 10px;}
+  .success p{color:var(--steel);max-width:46ch;margin:0 auto 8px;font-size:15px;}
+  .success .elig{display:inline-block;margin-top:18px;padding:9px 16px;border-radius:30px;font-family:var(--display);font-weight:600;font-size:13px;}
+  .success .elig.yes{background:rgba(35,169,160,.14);color:var(--teal);border:1px solid var(--teal);}
+  .success .elig.no{background:var(--amber-soft);color:var(--amber-bright);border:1px solid var(--amber-line);}
+
+  .footer{padding:22px 34px 30px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;}
+  .footer .lock{font-family:var(--display);font-weight:700;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--steel-dim);}
+  .footer .x{font-family:var(--display);font-weight:800;font-size:13px;color:var(--steel);letter-spacing:.04em;}
+  .footer .x .amber{color:var(--amber);}
+
+  @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;}}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- BANNER -->
+  <div class="banner">
+    <div class="glow a"></div><div class="glow b"></div><div class="glow c"></div>
+    <svg class="mesh" viewBox="0 0 760 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <g stroke="rgba(140,180,230,.45)" stroke-width=".7" fill="none">
+        <path d="M40 150 L150 90 L260 130 L380 70 L500 120 L620 80 L720 140"/>
+        <path d="M40 110 L150 150 L260 80 L380 140 L500 70 L620 130 L720 90"/>
+      </g>
+      <g fill="rgba(180,210,245,.85)">
+        <circle cx="150" cy="90" r="2.4"/><circle cx="260" cy="130" r="2.4"/><circle cx="380" cy="70" r="2.8"/>
+        <circle cx="500" cy="120" r="2.4"/><circle cx="620" cy="80" r="2.4"/><circle cx="150" cy="150" r="2"/>
+        <circle cx="260" cy="80" r="2"/><circle cx="500" cy="70" r="2.4"/>
+      </g>
+    </svg>
+    <h1 class="wordmark">TRANSVALOR</h1>
+    <p class="wordmark-sub">End-to-end manufacturing simulated</p>
+  </div>
+  <hr class="rule">
+
+  <!-- HERO -->
+  <div class="hero">
+    <p class="eyebrow">Save the Date · Transvalor Americas</p>
+    <h2 class="title">TECH DAY <span class="yr">2026</span></h2>
+    <p class="lede">A full day inside <b>end-to-end manufacturing simulation</b> — from forging and casting to microstructure and structural performance — hosted at Weldaloy Products Company.</p>
+  </div>
+
+  <!-- META -->
+  <div class="meta">
+    <div class="col">
+      <p class="k">When</p>
+      <div class="v">Thursday<br>Nov 5, 2026</div>
+      <div class="sub">10:00 AM – 5:30 PM<br>Reception &amp; dinner to follow</div>
+    </div>
+    <div class="col">
+      <p class="k">Where</p>
+      <div class="v">Weldaloy<br>Warren, MI</div>
+      <div class="sub">24011 Hoover Rd<br>Warren, MI 48089</div>
+    </div>
+    <div class="col">
+      <p class="k">Hosted by</p>
+      <!-- Swap this line for the official Weldaloy logo: <img src="weldaloy-logo.png" alt="Weldaloy" style="max-width:150px"> -->
+      <div class="host-mark">WELDALOY<small>Specialty Forgings</small></div>
+    </div>
+  </div>
+
+  <!-- PROGRAM -->
+  <div class="program">
+    <h2>On the program</h2>
+    <div class="prog-grid">
+      <div class="prog-item"><span class="car">›</span><div><b>Weldaloy facility tour</b> — high-integrity forgings &amp; rolled rings in production</div></div>
+      <div class="prog-item"><span class="car">›</span><div><b>Transvalor's vision</b> — end-to-end platform &amp; AI initiatives</div></div>
+      <div class="prog-item"><span class="car">›</span><div><b>FORGE® NxT 5.0</b> — what's new in metal-forming simulation</div></div>
+      <div class="prog-item"><span class="car">›</span><div><b>Continuous casting</b> — solidification &amp; defects with THERCAST®</div></div>
+      <div class="prog-item"><span class="car">›</span><div><b>Microstructure evolution</b> — grain size &amp; recrystallization with DIGIMU®</div></div>
+      <div class="prog-item"><span class="car">›</span><div><b>Structural analysis</b> — fatigue &amp; crack growth with Z-SET®</div></div>
+    </div>
+  </div>
+
+  <!-- FORM -->
+  <div class="form-wrap" id="formWrap">
+    <h2 class="form-head">Reserve <span class="reserve">your seat</span></h2>
+    <p class="form-intro">Seats are limited. Full agenda and details to follow after you register.</p>
+
+    <div class="grid2">
+      <div class="fld">
+        <label for="first">First name<span class="req">*</span></label>
+        <input type="text" id="first" autocomplete="given-name" placeholder="Jane">
+        <div class="err" data-for="first">Please enter your first name.</div>
+      </div>
+      <div class="fld">
+        <label for="last">Last name<span class="req">*</span></label>
+        <input type="text" id="last" autocomplete="family-name" placeholder="Doe">
+        <div class="err" data-for="last">Please enter your last name.</div>
+      </div>
+    </div>
+
+    <div class="fld">
+      <label for="company">Company<span class="req">*</span></label>
+      <input type="text" id="company" autocomplete="organization" placeholder="Company name">
+      <div class="err" data-for="company">Please enter your company.</div>
+    </div>
+
+    <div class="grid2">
+      <div class="fld">
+        <label for="email">Email<span class="req">*</span></label>
+        <input type="email" id="email" autocomplete="email" placeholder="jane@company.com">
+        <div class="err" data-for="email">Please enter a valid email address.</div>
+      </div>
+      <div class="fld">
+        <label for="phone">Phone number<span class="req">*</span></label>
+        <input type="tel" id="phone" autocomplete="tel" placeholder="+1 555 000 0000">
+        <div class="err" data-for="phone">Please enter your phone number.</div>
+      </div>
+    </div>
+
+    <div class="fld">
+      <label for="role">Role / Title<span class="req">*</span></label>
+      <input type="text" id="role" autocomplete="organization-title" placeholder="e.g. Process Engineer">
+      <div class="err" data-for="role">Please enter your role.</div>
+    </div>
+
+    <!-- CITIZENSHIP -->
+    <div class="notice">
+      <span class="ico">⚠</span><b>Plant tour access.</b> Weldaloy operates active ITAR-controlled projects, so the facility tour is open to <b>U.S. citizens and Green Card (Permanent Resident) holders only</b>. Your answers below are used to confirm tour eligibility in advance.
+    </div>
+
+    <div class="fld">
+      <label>Citizenship status<span class="req">*</span></label>
+      <div class="seg" id="citSeg" role="group" aria-label="Citizenship status">
+        <button type="button" data-val="U.S. Citizen" aria-pressed="false">U.S. Citizen</button>
+        <button type="button" data-val="Other" aria-pressed="false">Other</button>
+      </div>
+      <div class="err" data-for="citizenship">Please select your citizenship status.</div>
+    </div>
+
+    <!-- conditional: Other -->
+    <div class="reveal" id="otherBlock">
+      <div class="fld">
+        <label for="country">Country of citizenship<span class="req">*</span></label>
+        <input type="text" id="country" autocomplete="country-name" placeholder="Your country of citizenship">
+        <div class="err" data-for="country">Please enter your country of citizenship.</div>
+      </div>
+      <div class="fld">
+        <label>Do you hold a U.S. Green Card (Permanent Resident)?<span class="req">*</span></label>
+        <div class="seg" id="gcSeg" role="group" aria-label="Green card holder">
+          <button type="button" data-val="Yes" aria-pressed="false">Yes</button>
+          <button type="button" data-val="No" aria-pressed="false">No</button>
+        </div>
+        <div class="err" data-for="greencard">Please answer this question.</div>
+      </div>
+      <div class="tour-note" id="tourNote">
+        <b>About the plant tour:</b> based on your response, you won't be able to join the Weldaloy facility tour. You're warmly welcome to attend the full technical program — all sessions, plus the reception and dinner to follow. We'd be glad to have you.
+      </div>
+    </div>
+
+    <button type="button" class="submit" id="submitBtn">Reserve my seat</button>
+    <div class="demo-flag" id="demoFlag">Demo mode — no collection endpoint configured yet. Your entry was logged to the browser console so you can preview the data shape.</div>
+    <p class="privacy">We collect this information solely to manage Tech Day 2026 registration and confirm plant-tour clearance. It is not shared outside Transvalor Americas and Weldaloy.</p>
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="success" id="success">
+    <div class="check">✓</div>
+    <h2>You're registered</h2>
+    <p id="successMsg">Thanks for reserving your seat at Tech Day 2026. A confirmation and the full agenda will follow by email.</p>
+    <div id="eligBadge"></div>
+  </div>
+
+  <div class="footer">
+    <span class="lock">🔒 Registration · Tech Day 2026</span>
+    <span class="x">TRANSVALOR AMERICAS <span class="amber">×</span> WELDALOY</span>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   CONFIG — paste your collection endpoint here.
+   Leave blank to run in demo mode (form works, logs to console).
+   The form sends a JSON POST with the fields shown in buildPayload().
+   ============================================================ */
+const CONFIG = {
+  endpoint: "/api/register"   // same-origin Azure Functions API (see /api/register)
+};
+
+(function(){
+  const $ = id => document.getElementById(id);
+  let citizenship = "", greencard = "";
+
+  // segmented toggles
+  function wireSeg(segId, onPick){
+    const seg = $(segId);
+    seg.addEventListener('click', e=>{
+      const b = e.target.closest('button'); if(!b) return;
+      [...seg.children].forEach(x=>x.setAttribute('aria-pressed', x===b));
+      onPick(b.dataset.val);
+    });
+  }
+  wireSeg('citSeg', val=>{
+    citizenship = val;
+    clearErr('citizenship');
+    const other = val === 'Other';
+    $('otherBlock').classList.toggle('open', other);
+    if(!other){ greencard=""; resetSeg('gcSeg'); $('tourNote').classList.remove('show'); }
+  });
+  wireSeg('gcSeg', val=>{
+    greencard = val;
+    clearErr('greencard');
+    $('tourNote').classList.toggle('show', val === 'No');
+  });
+  function resetSeg(id){ [...$(id).children].forEach(x=>x.setAttribute('aria-pressed','false')); }
+
+  // validation helpers
+  function showErr(name){ const e=document.querySelector('.err[data-for="'+name+'"]'); if(e)e.classList.add('show'); const inp=$(name); if(inp)inp.classList.add('invalid'); }
+  function clearErr(name){ const e=document.querySelector('.err[data-for="'+name+'"]'); if(e)e.classList.remove('show'); const inp=$(name); if(inp)inp.classList.remove('invalid'); }
+  ['first','last','company','email','phone','role','country'].forEach(id=>{
+    $(id).addEventListener('input',()=>clearErr(id));
+  });
+
+  function eligible(){
+    if(citizenship === 'U.S. Citizen') return true;
+    if(citizenship === 'Other' && greencard === 'Yes') return true;
+    return false;
+  }
+
+  function validate(){
+    let ok = true;
+    const reqText = ['first','last','company','phone','role'];
+    reqText.forEach(id=>{ if(!$(id).value.trim()){ showErr(id); ok=false; } });
+    const email = $('email').value.trim();
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ showErr('email'); ok=false; }
+    if(!citizenship){ showErr('citizenship'); ok=false; }
+    if(citizenship === 'Other'){
+      if(!$('country').value.trim()){ showErr('country'); ok=false; }
+      if(!greencard){ showErr('greencard'); ok=false; }
+    }
+    return ok;
+  }
+
+  function buildPayload(){
+    return {
+      first_name: $('first').value.trim(),
+      last_name: $('last').value.trim(),
+      company: $('company').value.trim(),
+      email: $('email').value.trim(),
+      phone: $('phone').value.trim(),
+      role: $('role').value.trim(),
+      citizenship_status: citizenship,
+      country_of_citizenship: citizenship === 'Other' ? $('country').value.trim() : '',
+      green_card: citizenship === 'Other' ? greencard : '',
+      plant_tour_eligible: eligible() ? 'Yes' : 'No',
+      submitted_at: new Date().toISOString()
+    };
+  }
+
+  async function submit(){
+    if(!validate()){
+      const firstErr = document.querySelector('.err.show, .invalid');
+      if(firstErr) firstErr.scrollIntoView({behavior:'smooth', block:'center'});
+      return;
+    }
+    const btn = $('submitBtn');
+    const payload = buildPayload();
+    btn.disabled = true; btn.textContent = 'Reserving…';
+
+    try{
+      if(CONFIG.endpoint){
+        await fetch(CONFIG.endpoint, {
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body: JSON.stringify(payload)
+        });
+      } else {
+        console.log('[Tech Day 2026 registration] (demo mode) payload:', payload);
+        $('demoFlag').classList.add('show');
+      }
+      showSuccess(payload);
+    }catch(err){
+      console.error(err);
+      btn.disabled = false; btn.textContent = 'Reserve my seat';
+      alert('Something went wrong submitting your registration. Please try again, or email us directly.');
+    }
+  }
+
+  function showSuccess(p){
+    $('formWrap').style.display = 'none';
+    const s = $('success'); s.classList.add('show');
+    if(p.plant_tour_eligible === 'Yes'){
+      $('eligBadge').innerHTML = '<span class="elig yes">✓ Cleared for the plant tour, pending advance verification</span>';
+    } else {
+      $('eligBadge').innerHTML = '<span class="elig no">Plant tour not available — full program, reception &amp; dinner still on</span>';
+      $('successMsg').textContent = "Thanks for reserving your seat at Tech Day 2026. You're set for the full technical program, reception, and dinner. A confirmation and the full agenda will follow by email.";
+    }
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  $('submitBtn').addEventListener('click', submit);
+})();
+</script>
+</body>
+</html>

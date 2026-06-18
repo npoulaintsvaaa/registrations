@@ -1,0 +1,11 @@
+{
+  "name": "techday-api",
+  "version": "1.0.0",
+  "description": "Tech Day 2026 registration API (Azure Static Web Apps managed functions)",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@azure/data-tables": "^13.3.0"
+  }
+}
