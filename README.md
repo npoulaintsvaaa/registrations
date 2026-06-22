@@ -18,10 +18,23 @@ Everything runs inside your own Azure subscription.
 - `/api/export` reads the table and returns a UTF-8 CSV (opens cleanly in Excel).
 - `/api/export` is locked to the **admin** role via Entra ID sign-in.
 
-## One app setting you must add (in the Static Web App → Environment variables)
+## App settings you must add (Static Web App → Environment variables)
 ```
 REG_STORAGE_CONNECTION = <your Azure Storage account connection string>
+TURNSTILE_SECRET        = <your Cloudflare Turnstile SECRET key>
 ```
+
+## Data minimization
+Citizenship / Green Card answers are evaluated in the browser only. They are NOT
+transmitted or stored. The record keeps just a `plant_tour_eligible` Yes/No flag
+alongside name, company, email, phone, and role.
+
+## Bot protection (Cloudflare Turnstile)
+- Front end: the widget is in `index.html`. Replace the test sitekey
+  `1x00000000000000000000AA` with your real **sitekey**.
+- Back end: `/api/register` verifies every token against Cloudflare's Siteverify
+  API using `TURNSTILE_SECRET`. Submissions without a valid token are rejected.
+- Get both keys free at https://dash.cloudflare.com → Turnstile → Add widget.
 
 ## Getting the CSV
 Browse to:  https://<your-app>.azurestaticapps.net/api/export

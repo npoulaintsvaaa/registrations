@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 <style>
   :root{
     --navy-900:#07101F;
@@ -297,11 +298,6 @@
     <!-- conditional: Other -->
     <div class="reveal" id="otherBlock">
       <div class="fld">
-        <label for="country">Country of citizenship<span class="req">*</span></label>
-        <input type="text" id="country" autocomplete="country-name" placeholder="Your country of citizenship">
-        <div class="err" data-for="country">Please enter your country of citizenship.</div>
-      </div>
-      <div class="fld">
         <label>Do you hold a U.S. Green Card (Permanent Resident)?<span class="req">*</span></label>
         <div class="seg" id="gcSeg" role="group" aria-label="Green card holder">
           <button type="button" data-val="Yes" aria-pressed="false">Yes</button>
@@ -314,9 +310,17 @@
       </div>
     </div>
 
+    <!-- Bot protection: Cloudflare Turnstile.
+         Replace the test sitekey below with your real sitekey from the Cloudflare dashboard.
+         Test key shown ("1x00000000000000000000AA") always passes, so the form works before you sign up. -->
+    <div class="fld" style="display:flex;justify-content:center;margin:6px 0 4px;">
+      <div class="cf-turnstile" data-sitekey="0x4AAAAAADpSkOSN25uKRyti" data-theme="dark" data-callback="onCaptchaDone"></div>
+    </div>
+    <div class="err" data-for="captcha" style="text-align:center;">Please complete the verification.</div>
+
     <button type="button" class="submit" id="submitBtn">Reserve my seat</button>
     <div class="demo-flag" id="demoFlag">Demo mode — no collection endpoint configured yet. Your entry was logged to the browser console so you can preview the data shape.</div>
-    <p class="privacy">We collect this information solely to manage Tech Day 2026 registration and confirm plant-tour clearance. It is not shared outside Transvalor Americas and Weldaloy.</p>
+    <p class="privacy">Your citizenship answers are used only to determine plant-tour eligibility and are <b>not stored</b> — only a yes/no eligibility flag is recorded with your registration. We use this information solely to manage Tech Day 2026 and confirm tour eligibility; it is not shared outside Transvalor Americas and Weldaloy.</p>
   </div>
 
   <!-- SUCCESS -->
@@ -373,7 +377,7 @@ const CONFIG = {
   // validation helpers
   function showErr(name){ const e=document.querySelector('.err[data-for="'+name+'"]'); if(e)e.classList.add('show'); const inp=$(name); if(inp)inp.classList.add('invalid'); }
   function clearErr(name){ const e=document.querySelector('.err[data-for="'+name+'"]'); if(e)e.classList.remove('show'); const inp=$(name); if(inp)inp.classList.remove('invalid'); }
-  ['first','last','company','email','phone','role','country'].forEach(id=>{
+  ['first','last','company','email','phone','role'].forEach(id=>{
     $(id).addEventListener('input',()=>clearErr(id));
   });
 
@@ -383,6 +387,11 @@ const CONFIG = {
     return false;
   }
 
+  function captchaToken(){
+    const el = document.querySelector('[name="cf-turnstile-response"]');
+    return el ? el.value : '';
+  }
+
   function validate(){
     let ok = true;
     const reqText = ['first','last','company','phone','role'];
@@ -390,14 +399,14 @@ const CONFIG = {
     const email = $('email').value.trim();
     if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ showErr('email'); ok=false; }
     if(!citizenship){ showErr('citizenship'); ok=false; }
-    if(citizenship === 'Other'){
-      if(!$('country').value.trim()){ showErr('country'); ok=false; }
-      if(!greencard){ showErr('greencard'); ok=false; }
-    }
+    if(citizenship === 'Other' && !greencard){ showErr('greencard'); ok=false; }
+    if(!captchaToken()){ showErr('captcha'); ok=false; }
     return ok;
   }
 
   function buildPayload(){
+    // Privacy by design: citizenship/green-card answers stay in the browser.
+    // Only the derived eligibility flag is transmitted and stored.
     return {
       first_name: $('first').value.trim(),
       last_name: $('last').value.trim(),
@@ -405,10 +414,8 @@ const CONFIG = {
       email: $('email').value.trim(),
       phone: $('phone').value.trim(),
       role: $('role').value.trim(),
-      citizenship_status: citizenship,
-      country_of_citizenship: citizenship === 'Other' ? $('country').value.trim() : '',
-      green_card: citizenship === 'Other' ? greencard : '',
       plant_tour_eligible: eligible() ? 'Yes' : 'No',
+      captcha_token: captchaToken(),
       submitted_at: new Date().toISOString()
     };
   }
@@ -425,11 +432,12 @@ const CONFIG = {
 
     try{
       if(CONFIG.endpoint){
-        await fetch(CONFIG.endpoint, {
+        const res = await fetch(CONFIG.endpoint, {
           method:'POST',
           headers:{'Content-Type':'application/json'},
           body: JSON.stringify(payload)
         });
+        if(!res.ok) throw new Error('Submit failed: ' + res.status);
       } else {
         console.log('[Tech Day 2026 registration] (demo mode) payload:', payload);
         $('demoFlag').classList.add('show');
@@ -438,9 +446,13 @@ const CONFIG = {
     }catch(err){
       console.error(err);
       btn.disabled = false; btn.textContent = 'Reserve my seat';
+      if(window.turnstile) window.turnstile.reset();   // token is single-use; get a fresh one
       alert('Something went wrong submitting your registration. Please try again, or email us directly.');
     }
   }
+
+  // Turnstile calls this (global) when the challenge is solved
+  window.onCaptchaDone = function(){ clearErr('captcha'); };
 
   function showSuccess(p){
     $('formWrap').style.display = 'none';

@@ -20,11 +20,11 @@ module.exports = async function (context, req) {
 
     const cols = [
       "submitted_at", "first_name", "last_name", "company", "email", "phone",
-      "role", "citizenship_status", "country_of_citizenship", "green_card", "plant_tour_eligible"
+      "role", "plant_tour_eligible"
     ];
     const headers = [
       "Submitted (UTC)", "First name", "Last name", "Company", "Email", "Phone",
-      "Role", "Citizenship status", "Country of citizenship", "Green card", "Plant tour eligible"
+      "Role", "Plant tour eligible"
     ];
 
     const all = [];

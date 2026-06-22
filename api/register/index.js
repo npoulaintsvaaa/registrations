@@ -1,13 +1,47 @@
 const { TableClient } = require("@azure/data-tables");
 
 const TABLE_NAME = "registrations";
-const REQUIRED = ["first_name", "last_name", "company", "email", "phone", "role", "citizenship_status"];
+// citizenship data is intentionally NOT collected here — only the derived eligibility flag.
+const REQUIRED = ["first_name", "last_name", "company", "email", "phone", "role", "plant_tour_eligible"];
+const SITEVERIFY = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
+
+async function verifyCaptcha(token, remoteip, context) {
+  const secret = process.env.TURNSTILE_SECRET;
+  if (!secret) {
+    context.log.error("TURNSTILE_SECRET app setting is missing.");
+    return false;
+  }
+  if (!token) return false;
+  try {
+    const body = { secret, response: token };
+    if (remoteip) body.remoteip = remoteip;
+    const r = await fetch(SITEVERIFY, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body)
+    });
+    const data = await r.json();
+    if (!data.success) context.log.warn("Turnstile rejected:", data["error-codes"]);
+    return data.success === true;
+  } catch (e) {
+    context.log.error("Turnstile verify error:", e);
+    return false;
+  }
+}
 
 module.exports = async function (context, req) {
   try {
     const b = req.body || {};
 
-    // --- basic server-side validation (don't trust the client alone) ---
+    // --- bot protection: verify the CAPTCHA token before doing anything else ---
+    const remoteip = req.headers["cf-connecting-ip"] || req.headers["x-forwarded-for"] || "";
+    const human = await verifyCaptcha(b.captcha_token, remoteip, context);
+    if (!human) {
+      context.res = { status: 400, headers: { "Content-Type": "application/json" }, body: { error: "captcha_failed" } };
+      return;
+    }
+
+    // --- field validation ---
     for (const f of REQUIRED) {
       if (!b[f] || !String(b[f]).trim()) {
         context.res = { status: 400, headers: { "Content-Type": "application/json" }, body: { error: "missing_field", field: f } };
@@ -16,6 +50,11 @@ module.exports = async function (context, req) {
     }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(b.email).trim())) {
       context.res = { status: 400, headers: { "Content-Type": "application/json" }, body: { error: "invalid_email" } };
+      return;
+    }
+    const elig = String(b.plant_tour_eligible).trim();
+    if (elig !== "Yes" && elig !== "No") {
+      context.res = { status: 400, headers: { "Content-Type": "application/json" }, body: { error: "invalid_eligibility" } };
       return;
     }
 
@@ -39,10 +78,8 @@ module.exports = async function (context, req) {
       email: String(b.email).trim(),
       phone: String(b.phone).trim(),
       role: String(b.role).trim(),
-      citizenship_status: String(b.citizenship_status).trim(),
-      country_of_citizenship: b.country_of_citizenship ? String(b.country_of_citizenship).trim() : "",
-      green_card: b.green_card ? String(b.green_card).trim() : "",
-      plant_tour_eligible: b.plant_tour_eligible ? String(b.plant_tour_eligible).trim() : "",
+      // Only the eligibility flag is persisted — no citizenship, country, or green-card data.
+      plant_tour_eligible: elig,
       submitted_at: b.submitted_at || now.toISOString()
     };
 
